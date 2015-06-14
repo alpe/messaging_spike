@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io"
 	"reflect"
 	"testing"
 )
@@ -51,9 +50,9 @@ func TestConsumerShouldHandleResubmissions(t *testing.T) {
 	if e, ok := <-errChan; !ok {
 		t.Errorf("expected error msg")
 	} else {
-		expected := ErrorEvent{io.EOF, duplicateEvent}
+		expected := ErrorEvent{ErrOptimisticLock, duplicateEvent}
 		if got := e; !reflect.DeepEqual(got, expected) {
-			t.Errorf("event should be %v but was %v", expected, got)
+			t.Errorf("event should be %s but was %s", expected, got)
 		}
 	}
 }
