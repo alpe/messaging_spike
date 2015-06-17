@@ -28,3 +28,40 @@ func TestClocksMatchWikipediaExample(t *testing.T) {
 		t.Errorf("expected '%s' but got '%s' for C", expected, got)
 	}
 }
+
+func TestWithMultipleConsumersOnlyOneShouldAct(t *testing.T) {
+	// topic with A+B as consumers
+	a := NewVCModel(A)
+	otherA := NewVCModel(A)
+	c := NewVCModel(C)
+
+	if err := a.SendTo(c, "v1", "v2"); err != nil {
+		t.Fatalf("%v", err)
+	}
+	if err := otherA.SendTo(c, "v3"); err == nil {
+		t.Fatal("expected error")
+	}
+	expected := "v2"
+	if c.state != expected {
+		t.Errorf("expected state %q but was %q", expected, c.state)
+	}
+}
+
+func TestWithDetached(t *testing.T) {
+	// topic with A+B as consumers
+	a := NewVCModel(A)
+	detached := NewVCModel(B)
+	c := NewVCModel(C)
+
+	if err := a.SendTo(c, "v1", "v2"); err != nil {
+		t.Fatalf("%v", err)
+	}
+	if err := detached.SendTo(c, "latest"); err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	expected := "latest"
+	if c.state != expected {
+		t.Errorf("expected state %q but was %q", expected, c.state)
+	}
+}
