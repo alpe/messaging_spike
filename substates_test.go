@@ -69,7 +69,7 @@ func TestSourceRandomOrderOfEvents(t *testing.T) {
 			}
 		}
 		s := NewCoffeeOrderConsumer()
-		random := shuffle(append(events, p.StateEvents...))
+		random := shuffle(append(events, p.StateEvents...)...)
 
 		// when
 		if err := s.SourceEvents(random); err != nil {
@@ -84,7 +84,7 @@ func TestSourceRandomOrderOfEvents(t *testing.T) {
 	}
 }
 
-func shuffle(a []Event) []Event {
+func shuffle(a ...Event) []Event {
 	for i := range a {
 		j := rand.Intn(i + 1)
 		a[i], a[j] = a[j], a[i]
