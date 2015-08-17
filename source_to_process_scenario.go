@@ -57,7 +57,10 @@ func NewAutoSwitchConsumer(name int) *SourceProcessConsumer {
 }
 
 func (c *SourceProcessConsumer) onEvent(e ClockedEvent) error {
-	if c.isSourcingCompleted(e) {
+	if c.Mode == ModeSourcing && c.isSourcingCompleted(e) {
+		c.enableProcessingMode()
+	}
+	if c.Mode == ModeProcessing {
 		return c.processEvent(e)
 	}
 	return c.sourceEvent(e)
@@ -67,16 +70,12 @@ func (c *SourceProcessConsumer) isSourcingCompleted(e ClockedEvent) bool {
 	if c.Mode == ModeProcessing {
 		return true
 	}
-
 	if _, ok := e.(*InternalConsumerUpdatedMessage); ok { // we source our internal state messages first by convention
 		return false
 	}
-	if c.sourcedClock.Equals(c.vectorClock) {
-		c.enableProcessingMode()
-		return true
-	}
-	return false
+	return c.sourcedClock.Equals(c.vectorClock)
 }
+
 func (c *SourceProcessConsumer) enableProcessingMode() {
 	fmt.Printf("switching to processing mode: %+v", c)
 	c.Mode = ModeProcessing
@@ -95,7 +94,7 @@ func (c *SourceProcessConsumer) sourceEvent(e ClockedEvent) error {
 	}
 
 	// check sourcing completed
-	if c.sourcedClock.Equals(c.vectorClock) {
+	if c.isSourcingCompleted(e) {
 		c.enableProcessingMode()
 	}
 
