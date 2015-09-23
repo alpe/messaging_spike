@@ -17,14 +17,23 @@ all events but are not allowed to write events.
 
 
 ## Switch from sourcing to processing mode
-* Scenario
+* Scenario:
 Consumers start in sourcing mode where they consume all previous events they had processed before.
 Use case: deployment/ restart to build internal state.
 
-### TODO
+## Message versioning & migration
+* Scenario:
+Messages are persisted and immutable. When the content structure/ format needs to change all consumers must be able
+to handle old and new message formats. 
+This "upgrade" logic should be separated (like an anti corruption layer) and not
+go into the main processing logic. Otherwise we'd end up with lot of code handling version related conditions across the system. 
+
+
+## TODO
  - [ ] build state from snapshots
  - [ ] shading consumers
- 
+ - [ ] backpressure algo to not overload from a topic (fair consumers)
+ - [ ] handy-Lamport algorithm: mini batches
 ## Resources
 * http://basho.com/posts/technical/why-vector-clocks-are-hard/
 * https://en.wikipedia.org/wiki/Lamport_timestamps
