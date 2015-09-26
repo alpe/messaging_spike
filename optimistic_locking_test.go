@@ -52,7 +52,7 @@ func TestConsumerShouldHandleResubmissions(t *testing.T) {
 	} else {
 		expected := ErrorEvent{ErrOptimisticLock, duplicateEvent}
 		if got := e; !reflect.DeepEqual(got, expected) {
-			t.Errorf("event should be %s but was %s", expected, got)
+			t.Errorf("event should be %+v but was %+v", expected, got)
 		}
 	}
 }

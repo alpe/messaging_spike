@@ -57,7 +57,7 @@ func TestSwitchBackProcessToSourcing(t *testing.T) {
 	consumers := []*SourceProcessConsumer{NewManualStartConsumer(A), NewManualStartConsumer(A)}
 
 	for i, e := range q.EventStream(ByTimeLine) {
-		c1, c2 := consumers[i % 2], consumers[(i + 1) % 2]
+		c1, c2 := consumers[i%2], consumers[(i+1)%2]
 		// when one consumer processes
 		if err := c1.DoProcessing(); err != nil {
 			t.Fatalf("unexpected error %s", err)
@@ -67,8 +67,14 @@ func TestSwitchBackProcessToSourcing(t *testing.T) {
 		}
 		// and one consumer sources
 		c2.DoSourcing()
-		c2.OnEvent(c1.StateEvents[0])
-		c2.OnEvent(e)
+		if err := c2.OnEvent(c1.StateEvents[0]); err != nil {
+			t.Fatalf("unexpected error %s", err)
+		}
+
+		if err := c2.OnEvent(e); err != nil {
+			t.Fatalf("unexpected error %s", err)
+		}
+
 		c1.StateEvents = make([]ClockedEvent, 0)
 
 		// then sourcing should be completed
@@ -148,7 +154,7 @@ func (q MessageQueue) New() *MessageQueue {
 
 func (q *MessageQueue) Add(producer int, newState string) *MessageQueue {
 	var newClock VectorClock
-	for i, x := 0, rand.Int() % 1000; i < x; i++ { // random clock step
+	for i, x := 0, rand.Int()%1000; i < x; i++ { // random clock step
 		newClock = q.incrementClock(producer)
 		q.vc[producer] = newClock
 	}

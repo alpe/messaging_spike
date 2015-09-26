@@ -96,11 +96,11 @@ func (c *SourceProcessConsumer) DoSourcing() {
 	fmt.Printf("switching to sourcing mode: %+v\n", c)
 }
 
-func (c *SourceProcessConsumer) clocksSynced() bool{
+func (c *SourceProcessConsumer) clocksSynced() bool {
 	return c.sourcedClock.Equals(c.vectorClock)
 }
-func (c *SourceProcessConsumer) DoProcessing() error{
-	if !c.clocksSynced(){
+func (c *SourceProcessConsumer) DoProcessing() error {
+	if !c.clocksSynced() {
 		return fmt.Errorf("internal clocks out of sync")
 	}
 	c.enableProcessingMode()

@@ -121,7 +121,6 @@ func (c *CoffeeOrderConsumer) OnEvent(e Event) error {
 	default:
 		return fmt.Errorf("unsupported event: %T", ev)
 	}
-	return nil
 }
 
 func (c *CoffeeOrderConsumer) SourceEvents(events []Event) error {
