@@ -40,7 +40,9 @@ func (v VectorClock) Merge(o VectorClock) VectorClock {
 			continue
 		}
 		if vv, exists := newClock.clocks[k]; !exists || n > vv {
-			newClock.clocks[k] = n
+			if n > 0 {
+				newClock.clocks[k] = n
+			}
 		}
 	}
 	return newClock

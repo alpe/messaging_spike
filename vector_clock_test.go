@@ -72,7 +72,7 @@ func TestWithMultipleConsumersOnlyOneShouldAct(t *testing.T) {
 	}
 }
 
-func TestWithDetached(t *testing.T) {
+func TestWithDetachedProducer(t *testing.T) {
 	// topic with A+B as consumers
 	a := NewVCModel(A)
 	detached := NewVCModel(B)
