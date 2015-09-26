@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/alpe/messaging_spike.svg?branch=master)](https://travis-ci.org/alpe/messaging_spike)
+
+
 # Spike: Async message handling 
 Showcase DDD and EIPatterns to deal with some common asynchronous and concurrent update issues.
 

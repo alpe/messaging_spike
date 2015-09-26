@@ -1,0 +1,23 @@
+language: go
+go:
+- 1.4.2
+- 1.5
+- tip
+
+
+before_install:
+- export REPOSITORY_ROOT=${TRAVIS_BUILD_DIR}
+- go get golang.org/x/tools/cmd/vet
+- go get github.com/kisielk/errcheck
+
+
+script:
+- go test -v -race -timeout=90s github.com/alpe/spike_messaging/...
+- go vet github.com/alpe/spike_messaging/...
+- errcheck github.com/alpe/spike_messaging/...
+- go test -bench '.*' -run none github.com/alpe/spike_messaging/...
+
+env:
+- GOMAXPROCS=4
+
+sudo: false
