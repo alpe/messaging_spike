@@ -1,4 +1,4 @@
-package main
+package messaging_spike
 
 const (
 	A = iota
