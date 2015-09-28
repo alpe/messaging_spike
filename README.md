@@ -23,6 +23,7 @@ all events but are not allowed to write events.
 * Scenario:
 Consumers start in sourcing mode where they consume all previous events they had processed before.
 Use case: deployment/ restart to build internal state.
+- [ ] Problem to solve: two consumers may receive the events in different order and speed.
 
 ## Message versioning & migration
 * Scenario:
