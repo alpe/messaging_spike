@@ -32,11 +32,13 @@ to handle old and new message formats.
 This "upgrade" logic should be separated (like an anti corruption layer) and not
 go into the main processing logic. Otherwise we'd end up with lot of code handling version related conditions across the system. 
 
+## Fair fan in
+* Scenario:
+A client consumes multiple topics. Instead of concurrent consumption every topic should have a fair chance to be read. 
 
 ## TODO
  - [ ] build state from snapshots
  - [ ] shading consumers
- - [ ] backpressure algo to not overload from a topic (fair consumers)
  - [ ] handy-Lamport algorithm: mini batches
 ## Resources
 * http://basho.com/posts/technical/why-vector-clocks-are-hard/
